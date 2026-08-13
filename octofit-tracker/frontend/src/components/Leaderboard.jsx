@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
-import { buildApiUrl } from '../config/api.js';
+
+const codespaceName = import.meta.env.VITE_CODESPACE_NAME;
+const apiBaseUrl = codespaceName ? `https://${codespaceName}-8000.app.github.dev` : 'http://localhost:8000';
+const apiUrl = `${apiBaseUrl}/api/leaderboard/`;
 
 const normalizeLeaderboard = (payload) => {
   if (Array.isArray(payload)) return payload;
@@ -15,7 +18,7 @@ export default function Leaderboard() {
   useEffect(() => {
     const controller = new AbortController();
 
-    fetch(buildApiUrl('leaderboard'), { signal: controller.signal })
+    fetch(apiUrl, { signal: controller.signal })
       .then((response) => response.json())
       .then((payload) => setEntries(normalizeLeaderboard(payload)))
       .catch((fetchError) => {

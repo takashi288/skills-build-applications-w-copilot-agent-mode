@@ -1,5 +1,8 @@
 import { useEffect, useState } from 'react';
-import { buildApiUrl } from '../config/api.js';
+
+const codespaceName = import.meta.env.VITE_CODESPACE_NAME;
+const apiBaseUrl = codespaceName ? `https://${codespaceName}-8000.app.github.dev` : 'http://localhost:8000';
+const apiUrl = `${apiBaseUrl}/api/teams/`;
 
 const normalizeTeams = (payload) => {
   if (Array.isArray(payload)) return payload;
@@ -15,7 +18,7 @@ export default function Teams() {
   useEffect(() => {
     const controller = new AbortController();
 
-    fetch(buildApiUrl('teams'), { signal: controller.signal })
+    fetch(apiUrl, { signal: controller.signal })
       .then((response) => response.json())
       .then((payload) => setTeams(normalizeTeams(payload)))
       .catch((fetchError) => {
