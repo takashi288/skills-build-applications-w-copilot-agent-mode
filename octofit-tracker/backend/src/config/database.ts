@@ -1,18 +1,18 @@
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
-const connectionString = process.env.MONGODB_URI || 'mongodb://localhost:27017/octofit_db';
-const db = mongoose.connection;
+dotenv.config();
 
-mongoose
-  .connect(connectionString)
-  .then(() => {
-    console.log('Connected to octofit_db');
-  })
-  .catch((error) => {
-    console.error('Error connecting to octofit_db:', error);
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/octofit-tracker';
+
+export const connectDB = async () => {
+  try {
+    await mongoose.connect(MONGODB_URI);
+    console.log('MongoDB connected successfully');
+  } catch (error) {
+    console.error('MongoDB connection error:', error);
     process.exit(1);
-  });
+  }
+};
 
-db.on('error', console.error.bind(console, 'connection error:'));
-
-export default db;
+export default connectDB;

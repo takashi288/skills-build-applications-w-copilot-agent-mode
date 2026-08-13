@@ -1,22 +1,21 @@
 import mongoose from 'mongoose';
+import dotenv from 'dotenv';
 
-const connectionString = process.env.MONGODB_URI || 'mongodb://localhost:27017/octofit_db';
+dotenv.config();
 
-/**
- * Seed the octofit_db database with test data
- */
+const MONGODB_URI = process.env.MONGODB_URI || 'mongodb://localhost:27017/octofit-tracker';
+
 async function seedDatabase() {
   try {
-    await mongoose.connect(connectionString);
+    await mongoose.connect(MONGODB_URI);
+    console.log('MongoDB connected for seeding');
 
-    console.log('Connected to octofit_db');
+    // Seed data would go here
+    console.log('Database seeding completed');
 
-    // TODO: Add seed data for users, teams, activities, leaderboard, and workouts
-
-    console.log('Database seeding complete');
-    await mongoose.disconnect();
+    await mongoose.connection.close();
   } catch (error) {
-    console.error('Error seeding database:', error);
+    console.error('Seeding error:', error);
     process.exit(1);
   }
 }
