@@ -1,8 +1,8 @@
 import { useEffect, useState } from 'react';
 
-const codespaceName = import.meta.env.VITE_CODESPACE_NAME;
-const apiBaseUrl = codespaceName ? `https://${codespaceName}-8000.app.github.dev` : 'http://localhost:8000';
-const apiUrl = `${apiBaseUrl}/api/activities/`;
+const apiUrl = import.meta.env.VITE_CODESPACE_NAME
+  ? `https://${import.meta.env.VITE_CODESPACE_NAME}-8000.app.github.dev/api/activities/`
+  : 'http://localhost:8000/api/activities/';
 
 const normalizeActivities = (payload) => {
   if (Array.isArray(payload)) return payload;
